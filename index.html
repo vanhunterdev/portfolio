@@ -38,31 +38,54 @@
       border: 1px solid var(--panel-border);
       border-radius: 12px;
       padding: 1.75rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       position: relative;
       box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     }
     .hud-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
       border-bottom: 1px solid var(--panel-border);
       padding-bottom: 1.25rem;
       margin-bottom: 1.25rem;
+    }
+    .hud-profile-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .avatar-wrapper {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+      overflow: hidden;
+      background: #000;
+      flex-shrink: 0;
+    }
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .hud-title h1 {
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.75rem;
       font-weight: 700;
       color: #fff;
+      line-height: 1.2;
     }
     .hud-title .class-badge {
       font-size: 0.9rem;
       color: var(--accent);
       font-weight: 600;
       font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.2rem;
     }
     .hud-status {
       display: inline-flex;
@@ -78,20 +101,116 @@
     }
     .status-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
 
-    .hud-stats-grid {
+    /* ПАРАМЕТРЫ ПЕРСОНАЖА (STATS COUNTERS) */
+    .char-metrics-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    .metric-card {
+      background: var(--tag-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      text-align: center;
+    }
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .metric-unit {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-left: 0.25rem;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* РАДАРЫ НАВЫКОВ (2 КОЛОНКИ) */
+    .radars-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .radar-card {
+      background: var(--tag-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .radar-card h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+    .radar-chart-box {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      height: 280px;
+    }
+
+    /* ИНВЕНТАРЬ И АЧИВКИ В HUD */
+    .hud-lower-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.25rem;
       font-size: 0.85rem;
+      border-top: 1px solid var(--panel-border);
+      padding-top: 1.25rem;
     }
-    .stat-box h4 {
+    .hud-box h4 {
       font-family: 'JetBrains Mono', monospace;
       color: var(--text-muted);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
+    .gear-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+    .gear-item strong { color: #fff; }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem;
+    }
+    .achievement-card {
+      background: var(--tag-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .ach-icon { font-size: 1.25rem; }
+    .ach-name { font-size: 0.8rem; font-weight: 600; color: #fff; line-height: 1.2; }
+    .ach-desc { font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
     .stat-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .stat-tag {
       background: var(--tag-bg);
@@ -251,7 +370,6 @@
     }
     .modal-content { padding: 1.75rem; }
 
-    /* ЗЕЛЕНАЯ КНОПКА БИЛДА (АКЦЕНТНАЯ) */
     .btn-build-primary {
       display: inline-flex;
       align-items: center;
@@ -274,7 +392,6 @@
       background: #34d399;
     }
 
-    /* ВИДЕО YOUTUBE */
     .video-container {
       position: relative;
       padding-bottom: 56.25%;
@@ -290,7 +407,6 @@
       top: 0; left: 0; width: 100%; height: 100%; border: 0;
     }
 
-    /* РАЗДЕЛЕННЫЕ ПЛАШКИ ХАРАКТЕРИСТИК */
     .info-panels-group {
       display: flex;
       flex-direction: column;
@@ -338,7 +454,6 @@
       font-weight: bold;
     }
 
-    /* ГАЛЕРЕЯ СКРИНШОТОВ С ПОДПИСЯМИ */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -399,7 +514,7 @@
       border: 1px solid var(--panel-border);
     }
 
-    /* ПОЛНОЭКРАННЫЙ ПРОСМОТРЩИК СКРИНШОТА (LIGHTBOX) */
+    /* LIGHTBOX */
     .lightbox-backdrop {
       position: fixed;
       inset: 0;
@@ -438,40 +553,64 @@
     <!-- CHARACTER SHEET / HUD -->
     <header class="hud-header">
       <div class="hud-top">
-        <div class="hud-title">
-          <h1>ИВАН ЧЕРНОВ</h1>
-          <div class="class-badge">&lt;Lead Game Designer & Mechanics Prototyper /&gt;</div>
+        <div class="hud-profile-left">
+          <div class="avatar-wrapper">
+            <img id="hud-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80" alt="Avatar">
+          </div>
+          <div class="hud-title">
+            <h1 id="hud-name">ИВАН ЧЕРНОВ</h1>
+            <div class="class-badge" id="hud-class">&lt;Lead Game Designer & Mechanics Prototyper /&gt;</div>
+          </div>
         </div>
-        <div class="hud-status">
+        <div class="hud-status" id="hud-status-box">
           <span class="status-dot"></span>
-          <span>READY TO QUEST</span>
+          <span id="hud-status-text">READY TO QUEST</span>
         </div>
       </div>
 
-      <div class="hud-stats-grid">
-        <div class="stat-box">
-          <h4>⚔️ Специализация</h4>
-          <div class="stat-tags">
-            <span class="stat-tag">Combat Design</span>
-            <span class="stat-tag">System Design</span>
-            <span class="stat-tag">Mechanics Prototyping</span>
+      <!-- КЛЮЧЕВЫЕ МЕТРИКИ ПЕРСОНАЖА (УРОВЕНЬ, ОПЫТ, КОМАНДА) -->
+      <div class="char-metrics-bar" id="char-metrics-bar">
+        <!-- Сюда подставляются статы из profile -->
+      </div>
+
+      <!-- ДВЕ РАДАРНЫЕ ДИАГРАММЫ НАВЫКОВ -->
+      <div class="radars-section">
+        <div class="radar-card">
+          <h4 style="color: #a5b4fc;">⚔️ Core Game Design</h4>
+          <div class="radar-chart-box">
+            <canvas id="gdRadarChart"></canvas>
           </div>
         </div>
-        <div class="stat-box">
-          <h4>🛠️ Инвентарь (Стек)</h4>
-          <div class="stat-tags">
-            <span class="stat-tag">Unity (C#)</span>
-            <span class="stat-tag">Godot</span>
-            <span class="stat-tag">Cocos Creator</span>
-            <span class="stat-tag">Git</span>
+        <div class="radar-card">
+          <h4 style="color: #6ee7b7;">🛠️ Tech & Adjacent Skills</h4>
+          <div class="radar-chart-box">
+            <canvas id="techRadarChart"></canvas>
           </div>
         </div>
-        <div class="stat-box">
+      </div>
+
+      <!-- НИЖНИЙ БЛОК: ИНВЕНТАРЬ, АЧИВКИ, СВЯЗЬ -->
+      <div class="hud-lower-grid">
+        <div class="hud-box">
+          <h4>🎒 Инвентарь (Стек)</h4>
+          <div class="gear-list" id="gear-list">
+            <!-- Сюда подгружается инвентарь -->
+          </div>
+        </div>
+
+        <div class="hud-box">
+          <h4>🏆 Разблокированные ачивки</h4>
+          <div class="achievements-grid" id="achievements-grid">
+            <!-- Сюда подгружаются ачивки -->
+          </div>
+        </div>
+
+        <div class="hud-box">
           <h4>📡 Связь</h4>
           <div class="stat-tags">
             <a href="https://t.me/vanhunterdev" target="_blank" class="stat-tag" style="color: #60a5fa; text-decoration: none;">Telegram</a>
-            <a href="https://t.me/chernovveek" class="stat-tag" style="color: #e2e8f0; text-decoration: none;">Мой паблик</a>
-            <a href="https://vanhunter.itch.io" class="stat-tag" style="color: #e2e8f0; text-decoration: none;">Itch.io</a>
+            <a href="https://t.me/chernovveek" target="_blank" class="stat-tag" style="color: #e2e8f0; text-decoration: none;">Мой паблик</a>
+            <a href="https://vanhunter.itch.io" target="_blank" class="stat-tag" style="color: #e2e8f0; text-decoration: none;">Itch.io</a>
           </div>
         </div>
       </div>
@@ -505,10 +644,17 @@
     <div id="lightbox-caption" class="lightbox-caption"></div>
   </div>
 
-  <!-- PapaParse для чтения CSV -->
+  <!-- БИБЛИОТЕКИ: PapaParse для CSV и Chart.js для радаров -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
+    // 1. ССЫЛКА НА ЛИСТ ПРОЕКТОВ (Лист 1):
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMLFxwVYRo4tJpLB8qyh98e8VBRSumEXo1l7BCpueaMKa28s0wnJbbzGnImdFUyyo_9WW9htUhDA_W/pub?gid=0&single=true&output=csv';
+
+    // 2. ССЫЛКА НА ЛИСТ ПРОФИЛЯ / SKILLS (Лист 2):
+    // Вставьте сюда опубликованную ссылку на лист "profile" (с gid=...):
+    const PROFILE_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMLFxwVYRo4tJpLB8qyh98e8VBRSumEXo1l7BCpueaMKa28s0wnJbbzGnImdFUyyo_9WW9htUhDA_W/pub?gid=1095759329&single=true&output=tsv';
 
     let allProjects = [];
     let currentFilter = 'all';
@@ -520,6 +666,7 @@
     }
 
     async function init() {
+      // 1. Загрузка проектов
       Papa.parse(CSV_URL, {
         download: true,
         header: true,
@@ -531,6 +678,167 @@
         error: function() {
           document.getElementById('cards-container').innerHTML = 
             '<p style="color: #ef4444; font-family: monospace;">Ошибка загрузки Google Таблицы. Проверьте ссылку публикации CSV.</p>';
+        }
+      });
+
+      // 2. Загрузка профиля и радаров
+      if (PROFILE_CSV_URL) {
+        Papa.parse(PROFILE_CSV_URL, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            applyProfileData(results.data);
+          }
+        });
+      } else {
+        // Дефолтные радары и статы, если ссылка еще не вставлена
+        renderDefaultProfile();
+      }
+    }
+
+    function applyProfileData(rows) {
+      const stats = [];
+      const skillsGd = [];
+      const skillsTech = [];
+      const gear = [];
+      const achs = [];
+
+      rows.forEach(r => {
+        const type = (r.type || '').trim().toLowerCase();
+        if (type === 'meta') {
+          if (r.name === 'avatar' && r.value) document.getElementById('hud-avatar').src = r.value;
+          if (r.name === 'name' && r.value) document.getElementById('hud-name').textContent = r.value;
+          if (r.name === 'class_title' && r.value) document.getElementById('hud-class').textContent = `<${r.value} />`;
+          if (r.name === 'status' && r.value) document.getElementById('hud-status-text').textContent = r.value;
+        } else if (type === 'stat') {
+          stats.push(r);
+        } else if (type === 'skill_gd') {
+          skillsGd.push({ name: r.name, val: parseInt(r.value) || 50, desc: r.desc });
+        } else if (type === 'skill_tech') {
+          skillsTech.push({ name: r.name, val: parseInt(r.value) || 50, desc: r.desc });
+        } else if (type === 'gear') {
+          gear.push(r);
+        } else if (type === 'achievement') {
+          achs.push(r);
+        }
+      });
+
+      // Отрисовка метрик
+      if (stats.length > 0) {
+        const metricsContainer = document.getElementById('char-metrics-bar');
+        metricsContainer.innerHTML = stats.map(s => `
+          <div class="metric-card">
+            <div class="metric-val">${s.value}<span class="metric-unit">${s.extra || ''}</span></div>
+            <div class="metric-label">${s.name}</div>
+          </div>
+        `).join('');
+      }
+
+      // Отрисовка инвентаря
+      if (gear.length > 0) {
+        document.getElementById('gear-list').innerHTML = gear.map(g => `
+          <div class="gear-item">${g.extra ? g.extra + ' ' : ''}<strong>${g.name}:</strong> <span style="color: var(--text-muted);">${g.value}</span></div>
+        `).join('');
+      }
+
+      // Отрисовка ачивок
+      if (achs.length > 0) {
+        document.getElementById('achievements-grid').innerHTML = achs.map(a => `
+          <div class="achievement-card">
+            <span class="ach-icon">${a.extra || '🏆'}</span>
+            <div>
+              <div class="ach-name">${a.name}</div>
+              <div class="ach-desc">${a.value || ''}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Инициализация радаров
+      createRadarChart('gdRadarChart', skillsGd, 'rgba(99, 102, 241, 0.4)', '#818cf8');
+      createRadarChart('techRadarChart', skillsTech, 'rgba(16, 185, 129, 0.4)', '#34d399');
+    }
+
+    function renderDefaultProfile() {
+      const defaultGd = [
+        { name: 'Системный дизайн', val: 90 },
+        { name: 'Боевые системы', val: 95 },
+        { name: 'Баланс & Математика', val: 85 },
+        { name: 'Левел-дизайн', val: 80 },
+        { name: 'Нарратив', val: 75 }
+      ];
+      const defaultTech = [
+        { name: 'Прототипирование C#', val: 90 },
+        { name: 'UI / UX Дизайн', val: 80 },
+        { name: 'Тех. арт & Spine', val: 75 },
+        { name: 'Архитектура', val: 85 },
+        { name: 'Продакшен & ТЗ', val: 85 }
+      ];
+      
+      document.getElementById('char-metrics-bar').innerHTML = `
+        <div class="metric-card"><div class="metric-val">28<span class="metric-unit">lvl</span></div><div class="metric-label">Возраст</div></div>
+        <div class="metric-card"><div class="metric-val">8+<span class="metric-unit">лет</span></div><div class="metric-label">Опыт в GD</div></div>
+        <div class="metric-card"><div class="metric-val">20+<span class="metric-unit">билдов</span></div><div class="metric-label">Прототипы</div></div>
+        <div class="metric-card"><div class="metric-val">12+<span class="metric-unit">чел</span></div><div class="metric-label">Команды</div></div>
+      `;
+
+      document.getElementById('gear-list').innerHTML = `
+        <div class="gear-item">🎮 <strong>Движки:</strong> <span style="color: var(--text-muted);">Unity, Godot Engine, Cocos Creator</span></div>
+        <div class="gear-item">💻 <strong>Код & Логика:</strong> <span style="color: var(--text-muted);">C#, GDScript, TypeScript, Git</span></div>
+        <div class="gear-item">📜 <strong>Дизайн & Документы:</strong> <span style="color: var(--text-muted);">Miro, Notion, Figma</span></div>
+      `;
+
+      document.getElementById('achievements-grid').innerHTML = `
+        <div class="achievement-card"><span class="ach-icon">🏆</span><div><div class="ach-name">Shipped Title</div><div class="ach-desc">Steam / PC Release</div></div></div>
+        <div class="achievement-card"><span class="ach-icon">👥</span><div><div class="ach-name">Guild Leader</div><div class="ach-desc">12+ Devs Team</div></div></div>
+        <div class="achievement-card"><span class="ach-icon">🎓</span><div><div class="ach-name">Sensei</div><div class="ach-desc">5+ Years Teaching</div></div></div>
+      `;
+
+      createRadarChart('gdRadarChart', defaultGd, 'rgba(99, 102, 241, 0.4)', '#818cf8');
+      createRadarChart('techRadarChart', defaultTech, 'rgba(16, 185, 129, 0.4)', '#34d399');
+    }
+
+    function createRadarChart(canvasId, items, fillColor, borderColor) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: items.map(i => i.name),
+          datasets: [{
+            data: items.map(i => i.val),
+            backgroundColor: fillColor,
+            borderColor: borderColor,
+            borderWidth: 2,
+            pointBackgroundColor: borderColor,
+            pointBorderColor: '#fff',
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return ` Уровень: ${context.raw} / 100`;
+                }
+              }
+            }
+          },
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+              grid: { color: 'rgba(255, 255, 255, 0.08)' },
+              pointLabels: {
+                color: '#94a3b8',
+                font: { family: 'JetBrains Mono', size: 10 }
+              },
+              ticks: { display: false, min: 0, max: 100 }
+            }
+          }
         }
       });
     }
@@ -588,7 +896,6 @@
         ? item.my_tasks.split(';').map(t => t.trim()).filter(Boolean).map(t => `<li>${t}</li>`).join('')
         : '';
 
-      // Парсинг скриншотов с возможными подписями: "img/1.png | Описание; img/2.png | Описание"
       let screenshotsHtml = '';
       if (item.screenshots) {
         const rawScreens = item.screenshots.includes(';') ? item.screenshots.split(';') : item.screenshots.split(',');
@@ -696,7 +1003,6 @@
       }
     }
 
-    /* ЛОГИКА ПОЛНОЭКРАННОГО СКРИНШОТА (LIGHTBOX) */
     function openLightbox(url, caption) {
       document.getElementById('lightbox-img').src = url;
       document.getElementById('lightbox-caption').textContent = (caption && caption !== 'Нажмите для увеличения') ? caption : '';
