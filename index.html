@@ -480,8 +480,8 @@
     <nav class="tabs-nav">
       <button class="tab-btn active" onclick="switchTab('all')">Все квесты</button>
       <button class="tab-btn" onclick="switchTab('commercial')">💼 Коммерческие проекты</button>
-      <button class="tab-btn" onclick="switchTab('indie')">🧪 Личные / Инди</button>
-      <button class="tab-btn" onclick="switchTab('prototype')">⚡ R&D и Прототипы</button>
+      <button class="tab-btn" onclick="switchTab('indie')">🧪 Личные</button>
+      <button class="tab-btn" onclick="switchTab('prototype')">⚡Прототипы</button>
     </nav>
 
     <!-- СЕТКА КАРТОЧЕК -->
@@ -665,13 +665,13 @@
 
           <!-- 4. ТЕХНИЧЕСКИЙ РАЗБОР / АРХИТЕКТУРА -->
           ${item.tech_desc ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Архитектура и реализация:</h4>
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Дополнительное описание:</h4>
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">${item.tech_desc}</p>
           ` : ''}
 
           <!-- 5. СКРИНШОТЫ С ПОДПИСЯМИ -->
           ${screenshotsHtml ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты и схемы:</h4>
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты:</h4>
             <div class="gallery-grid">${screenshotsHtml}</div>
           ` : ''}
 
