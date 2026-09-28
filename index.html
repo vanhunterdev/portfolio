@@ -475,22 +475,22 @@
       float: right;
       margin-top: 0.75rem;
       margin-right: 0.75rem;
-      background: rgba(239, 68, 68, 0.15);
+      background: rgba(239, 68, 68, 0.2);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(239, 68, 68, 0.5);
+      border: 1px solid rgba(239, 68, 68, 0.6);
       color: #fca5a5;
       font-size: 1.5rem;
-      line-height: 1;
       width: 40px;
       height: 40px;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;             /* Идеальное центрирование */
+      place-items: center;      /* по горизонтали и вертикали */
+      padding: 0;               /* Сбрасываем лишние отступы кнопки */
+      line-height: 0;           /* Убираем смещение базовой линии шрифта */
       z-index: 100;
       transition: all 0.2s ease;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
     }
     .modal-close-btn:hover {
       background: #ef4444;
@@ -500,15 +500,16 @@
       box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
     }
 
-    /* Обложка внутри открытого проекта (соотношение 1.26:1) */
+    /* Обложка внутри открытого проекта (полная, без обрезки) */
     .modal-hero-cover {
       width: 100%;
       aspect-ratio: 1.26 / 1;
-      max-height: 420px;
-      object-fit: cover;
+      height: auto;
+      max-height: none;         /* Убираем ограничение по высоте */
+      object-fit: contain;      /* Гарантирует, что картинка помещается целиком 1:1 */
       background: #080a0f;
       border-bottom: 1px solid var(--panel-border);
-      margin-top: -46px; /* Компенсация плавающего крестика */
+      margin-top: -46px;        /* Подложка под плавающий крестик */
       display: block;
     }
     .modal-content { padding: 1.75rem; }
