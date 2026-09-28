@@ -17,7 +17,7 @@
       --accent: #6366f1;
       --accent-glow: rgba(99, 102, 241, 0.25);
       --green: #10b981;
-      --gold: #f59e0b;
+      --green-glow: rgba(16, 185, 129, 0.3);
       --tag-bg: #1c2333;
     }
 
@@ -199,7 +199,6 @@
       font-size: 0.8rem;
       font-family: 'JetBrains Mono', monospace;
     }
-    .complexity-stars { color: var(--gold); }
 
     /* MODAL CASE STUDY */
     .modal-backdrop {
@@ -220,7 +219,7 @@
       border: 1px solid var(--accent);
       border-radius: 14px;
       width: 100%;
-      max-width: 820px;
+      max-width: 860px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 0 40px var(--accent-glow);
@@ -252,7 +251,30 @@
     }
     .modal-content { padding: 1.75rem; }
 
-    /* Видео YouTube 16:9 сразу после обложки */
+    /* ЗЕЛЕНАЯ КНОПКА БИЛДА (АКЦЕНТНАЯ) */
+    .btn-build-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: #042f2e;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.75rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 16px var(--green-glow);
+      transition: all 0.2s ease;
+      margin: 1rem 0 1.5rem;
+    }
+    .btn-build-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.5);
+      background: #34d399;
+    }
+
+    /* ВИДЕО YOUTUBE */
     .video-container {
       position: relative;
       padding-bottom: 56.25%;
@@ -268,20 +290,35 @@
       top: 0; left: 0; width: 100%; height: 100%; border: 0;
     }
 
-    /* СТИЛИЗАЦИЯ ПОД СТАТЫ RPG */
-    .stat-sheet {
+    /* РАЗДЕЛЕННЫЕ ПЛАШКИ ХАРАКТЕРИСТИК */
+    .info-panels-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stat-panel-card {
       background: var(--tag-bg);
       border: 1px solid var(--panel-border);
       border-radius: 8px;
-      padding: 1rem 1.25rem;
-      margin: 1.5rem 0;
+      padding: 1.1rem 1.25rem;
+    }
+    .stat-panel-card h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .stat-panel-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.6rem 1.25rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8rem;
     }
-    .stat-sheet-item strong { color: var(--text-muted); font-weight: normal; }
+    .stat-panel-grid div strong { color: var(--text-muted); font-weight: normal; }
 
     .quest-tasks {
       list-style: none;
@@ -301,18 +338,40 @@
       font-weight: bold;
     }
 
+    /* ГАЛЕРЕЯ СКРИНШОТОВ С ПОДПИСЯМИ */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
       margin-top: 1rem;
     }
-    .gallery-grid img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 6px;
+    .gallery-item {
+      background: var(--tag-bg);
       border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    .gallery-caption {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      line-height: 1.3;
     }
 
     .modal-actions {
@@ -338,6 +397,38 @@
     .action-btn.secondary {
       background: var(--tag-bg);
       border: 1px solid var(--panel-border);
+    }
+
+    /* ПОЛНОЭКРАННЫЙ ПРОСМОТРЩИК СКРИНШОТА (LIGHTBOX) */
+    .lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1.5rem;
+      z-index: 2000;
+      cursor: zoom-out;
+    }
+    .lightbox-backdrop.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      max-width: 800px;
+      text-align: center;
     }
   </style>
 </head>
@@ -399,7 +490,7 @@
     </main>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО ДЕТАЛЬНОГО РАЗБОРА -->
+  <!-- МОДАЛЬНОЕ ОКНО ДЕТАЛЬНОГО РАЗБОРА КЕЙСА -->
   <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
     <div class="modal-window" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeModal()">&times;</button>
@@ -407,14 +498,25 @@
     </div>
   </div>
 
+  <!-- ПОЛНОЭКРАННЫЙ ПРОСМОТР СКРИНШОТА (LIGHTBOX) -->
+  <div class="lightbox-backdrop" id="lightbox-backdrop" onclick="closeLightbox()">
+    <img id="lightbox-img" class="lightbox-img" src="" alt="Fullscreen Screenshot">
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+  </div>
+
   <!-- PapaParse для чтения CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
-    // ВСТАВЬТЕ СЮДА ВАШУ ССЫЛКУ НА ОПУБЛИКОВАННЫЙ CSV ИЗ ШАГА 1:
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMLFxwVYRo4tJpLB8qyh98e8VBRSumEXo1l7BCpueaMKa28s0wnJbbzGnImdFUyyo_9WW9htUhDA_W/pub?gid=0&single=true&output=csv';
 
     let allProjects = [];
     let currentFilter = 'all';
+
+    function getYouTubeId(urlOrId) {
+      if (!urlOrId) return '';
+      const match = urlOrId.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      return match ? match[1] : urlOrId.trim();
+    }
 
     async function init() {
       Papa.parse(CSV_URL, {
@@ -452,25 +554,23 @@
         return;
       }
 
-      filtered.forEach((item, index) => {
+      filtered.forEach((item) => {
         const card = document.createElement('div');
         card.className = 'quest-card';
         card.onclick = () => openModal(item);
-
-        const stars = '★'.repeat(parseInt(item.complexity) || 3) + '☆'.repeat(5 - (parseInt(item.complexity) || 3));
 
         card.innerHTML = `
           <img class="card-cover" src="${item.cover_url || ''}" alt="${item.title}" onerror="this.style.display='none'">
           <div class="card-body">
             <div class="card-meta">
               <span>${item.engine || 'Engine'}</span>
-              <span>${item.status || ''}</span>
+              <span>${item.year ? item.year : ''}</span>
             </div>
             <h3 class="card-title">${item.title}</h3>
             <div class="card-role">${item.my_role || ''}</div>
             <p class="card-desc">${item.desc || item.short_desc || ''}</p>
             <div class="card-footer">
-              <span class="complexity-stars" title="Сложность">${stars}</span>
+              <span style="color: var(--text-muted);">${item.status || ''}</span>
               <span style="color: var(--accent);">Осмотреть квест →</span>
             </div>
           </div>
@@ -487,64 +587,97 @@
         ? item.my_tasks.split(';').map(t => t.trim()).filter(Boolean).map(t => `<li>${t}</li>`).join('')
         : '';
 
-      const screenshots = item.screenshots 
-        ? item.screenshots.split(',').map(s => s.trim()).filter(Boolean).map(s => `<img src="${s}" alt="Скриншот">`).join('')
-        : '';
+      // Парсинг скриншотов с возможными подписями: "img/1.png | Описание; img/2.png | Описание"
+      let screenshotsHtml = '';
+      if (item.screenshots) {
+        const rawScreens = item.screenshots.includes(';') ? item.screenshots.split(';') : item.screenshots.split(',');
+        screenshotsHtml = rawScreens.map(entry => {
+          const parts = entry.split('|').map(p => p.trim());
+          const url = parts[0];
+          const caption = parts[1] || 'Нажмите для увеличения';
+          if (!url) return '';
+          return `
+            <div class="gallery-item" onclick="openLightbox('${url}', '${caption.replace(/'/g, "\\'")}')">
+              <img src="${url}" alt="Скриншот">
+              <div class="gallery-caption">${caption}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const cleanYtId = getYouTubeId(item.youtube_id);
 
       body.innerHTML = `
         ${item.cover_url ? `<img class="modal-hero-cover" src="${item.cover_url}" alt="Cover">` : ''}
         
         <div class="modal-content">
           <div style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.85rem; margin-bottom: 0.3rem;">
-            [${(item.section || 'QUEST').toUpperCase()}] // ${item.engine || ''}
+            [${(item.section || 'QUEST').toUpperCase()}] // ${item.engine || ''} ${item.year ? `// ${item.year}` : ''}
           </div>
           <h2 style="font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem;">${item.title}</h2>
           <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem;">${item.desc || ''}</div>
 
-          <!-- 1. ВИДЕО СРАЗУ ПОСЛЕ ОБЛОЖКИ И ВВОДНОЙ ЧАСТИ -->
-          ${item.youtube_id ? `
-            <div class="video-container">
-            // Функция автоматического извлечения чистого ID из любой ссылки YouTube
-function getYouTubeId(urlOrId) {
-  if (!urlOrId) return '';
-  const match = urlOrId.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-  return match ? match[1] : urlOrId.trim();
-}
+          <!-- КНОПКА СЫГРАТЬ В БИЛД СРАЗУ ПОСЛЕ ОПИСАНИЯ -->
+          ${item.build_url ? `
+            <a href="${item.build_url}" target="_blank" class="btn-build-primary">
+              🎮 Сыграть в билд
+            </a>
+          ` : ''}
 
-const cleanYtId = getYouTubeId(item.youtube_id);
-              <iframe src="https://www.youtube.com/embed/${item.youtube_id}?rel=0" allowfullscreen></iframe>
+          <!-- 1. ВИДЕО YOUTUBE -->
+          ${cleanYtId ? `
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/${cleanYtId}?rel=0" allowfullscreen></iframe>
             </div>
           ` : ''}
 
-          <!-- 2. СТАТЫ ПРЕДМЕТА / ПРОЕКТА -->
-          <div class="stat-sheet">
-            <div class="stat-sheet-item"><strong>Моя роль:</strong> ${item.my_role || 'Game Designer'}</div>
-            <div class="stat-sheet-item"><strong>Команда:</strong> ${item.team_composition || item.team_type || 'Solo'}</div>
-            <div class="stat-sheet-item"><strong>Платформа:</strong> ${item.platform || 'PC'}</div>
-            <div class="stat-sheet-item"><strong>Мои инструменты:</strong> ${item.tools || '-'}</div>
+          <!-- 2. РАЗДЕЛЕННЫЕ ПЛАШКИ ХАРАКТЕРИСТИК -->
+          <div class="info-panels-group">
+            <!-- О ПРОЕКТЕ -->
+            <div class="stat-panel-card">
+              <h4>📦 О проекте</h4>
+              <div class="stat-panel-grid">
+                <div><strong>Платформа:</strong> ${item.platform || 'PC'}</div>
+                <div><strong>Команда:</strong> ${item.team_composition || item.team_type || 'Solo'}</div>
+                <div><strong>Движок:</strong> ${item.engine || '-'}</div>
+                <div><strong>Жанр:</strong> ${item.genre || '-'}</div>
+                <div><strong>Год:</strong> ${item.year || '-'}</div>
+                <div><strong>Статус:</strong> ${item.status || '-'}</div>
+                ${item.tools_tags || item.tags ? `<div><strong>Теги проекта:</strong> ${item.tools_tags || item.tags}</div>` : ''}
+              </div>
+            </div>
+
+            <!-- О МОЕЙ РОЛИ -->
+            <div class="stat-panel-card">
+              <h4>👤 О моей роли</h4>
+              <div class="stat-panel-grid">
+                <div><strong>Моя роль:</strong> ${item.my_role || 'Game Designer'}</div>
+                <div><strong>Мои инструменты:</strong> ${item.tools || '-'}</div>
+              </div>
+            </div>
           </div>
 
-          <!-- 3. МОИ ЗАДАЧИ -->
+          <!-- 3. ВЫПОЛНЕННЫЕ ЗАДАЧИ -->
           ${tasksList ? `
             <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">📜 Выполненные задачи:</h4>
             <ul class="quest-tasks">${tasksList}</ul>
           ` : ''}
 
-          <!-- 4. ТЕХНИЧЕСКИЙ РАЗБОР -->
+          <!-- 4. ТЕХНИЧЕСКИЙ РАЗБОР / АРХИТЕКТУРА -->
           ${item.tech_desc ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Дополнительное описание:</h4>
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Архитектура и реализация:</h4>
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">${item.tech_desc}</p>
           ` : ''}
 
-          <!-- 5. СКРИНШОТЫ -->
-          ${screenshots ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты:</h4>
-            <div class="gallery-grid">${screenshots}</div>
+          <!-- 5. СКРИНШОТЫ С ПОДПИСЯМИ -->
+          ${screenshotsHtml ? `
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты и схемы:</h4>
+            <div class="gallery-grid">${screenshotsHtml}</div>
           ` : ''}
 
-          <!-- 6. КНОПКИ ДЕЙСТВИЙ -->
+          <!-- 6. ДОПОЛНИТЕЛЬНЫЕ КНОПКИ ДЕЙСТВИЙ -->
           <div class="modal-actions">
-            ${item.build_url ? `<a href="${item.build_url}" target="_blank" class="action-btn">🎮 Сыграть в билд</a>` : ''}
+            ${item.build_url ? `<a href="${item.build_url}" target="_blank" class="action-btn" style="background: var(--green); color: #042f2e;">🎮 Сыграть в билд</a>` : ''}
             ${item.doc_url ? `<a href="${item.doc_url}" target="_blank" class="action-btn secondary">📜 Дизайн-документ (GDD)</a>` : ''}
             ${item.repo_url ? `<a href="${item.repo_url}" target="_blank" class="action-btn secondary">💻 Исходный код</a>` : ''}
           </div>
@@ -562,8 +695,25 @@ const cleanYtId = getYouTubeId(item.youtube_id);
       }
     }
 
+    /* ЛОГИКА ПОЛНОЭКРАННОГО СКРИНШОТА (LIGHTBOX) */
+    function openLightbox(url, caption) {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-caption').textContent = (caption && caption !== 'Нажмите для увеличения') ? caption : '';
+      document.getElementById('lightbox-backdrop').classList.add('open');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-backdrop').classList.remove('open');
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        if (document.getElementById('lightbox-backdrop').classList.contains('open')) {
+          closeLightbox();
+        } else {
+          closeModal();
+        }
+      }
     });
 
     init();
