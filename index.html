@@ -170,7 +170,7 @@
       display: none;
     }
 
-    /* БЛОК "ОБО МНЕ" (Вариант Б) */
+    /* БЛОК "ОБО МНЕ" */
     .hud-bio-card {
       background: var(--tag-bg);
       border: 1px solid var(--panel-border);
@@ -308,15 +308,26 @@
       margin-bottom: 2rem;
     }
     .tabs-wrapper::after {
-      content: '';
+      content: '›';
       position: absolute;
       top: 0;
       right: 0;
       bottom: 8px;
-      width: 48px;
-      background: linear-gradient(to right, transparent, var(--bg));
+      width: 55px;
+      background: linear-gradient(to right, rgba(10, 12, 16, 0) 0%, var(--bg) 80%);
       pointer-events: none;
-      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 6px;
+      color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 700;
+      animation: pulse-arrow 1.8s infinite ease-in-out;
+    }
+    @keyframes pulse-arrow {
+      0%, 100% { opacity: 0.4; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(3px); }
     }
     .tabs-nav {
       display: flex;
@@ -380,12 +391,14 @@
       transform: translateY(-4px);
       border-color: var(--accent);
     }
+    /* Обложка в карточке каталога (соотношение 1.26:1) */
     .card-cover {
       width: 100%;
-      height: 190px;
+      aspect-ratio: 1.26 / 1;
       object-fit: cover;
-      background: #000;
+      background: #080a0f;
       border-bottom: 1px solid var(--panel-border);
+      display: block;
     }
     .card-body {
       padding: 1.25rem;
@@ -455,41 +468,49 @@
       position: relative;
     }
 
-    /* ПЛАВАЮЩИЙ STICKY КРЕСТИК ВНУТРИ ОКНА */
+    /* ПЛАВАЮЩИЙ КРАСНЫЙ КРЕСТИК ВНУТРИ ОКНА */
     .modal-close-btn {
       position: sticky;
-      top: 1rem;
+      top: 0.85rem;
       float: right;
       margin-top: 0.75rem;
       margin-right: 0.75rem;
-      background: rgba(28, 35, 51, 0.85);
+      background: rgba(239, 68, 68, 0.2);
       backdrop-filter: blur(8px);
-      border: 1px solid var(--panel-border);
-      color: #fff;
-      font-size: 1.35rem;
-      width: 38px;
-      height: 38px;
+      border: 1px solid rgba(239, 68, 68, 0.6);
+      color: #fca5a5;
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;             /* Идеальное центрирование */
+      place-items: center;      /* по горизонтали и вертикали */
+      padding: 0;               /* Сбрасываем лишние отступы кнопки */
+      line-height: 0;           /* Убираем смещение базовой линии шрифта */
       z-index: 100;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
     }
     .modal-close-btn:hover {
-      background: var(--accent);
-      border-color: #fff;
-      transform: scale(1.05);
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
     }
 
+    /* Обложка внутри открытого проекта (полная, без обрезки) */
     .modal-hero-cover {
       width: 100%;
-      height: 240px;
-      object-fit: cover;
+      aspect-ratio: 1.26 / 1;
+      height: auto;
+      max-height: none;         /* Убираем ограничение по высоте */
+      object-fit: contain;      /* Гарантирует, что картинка помещается целиком 1:1 */
+      background: #080a0f;
       border-bottom: 1px solid var(--panel-border);
-      margin-top: -46px; /* Компенсация плавающего крестика */
+      margin-top: -46px;        /* Подложка под плавающий крестик */
+      display: block;
     }
     .modal-content { padding: 1.75rem; }
 
@@ -637,7 +658,7 @@
       border: 1px solid var(--panel-border);
     }
 
-    /* ПЛАВАЮЩАЯ КНОПКА "НАВЕРХ" (BACK TO TOP) */
+    /* ПЛАВАЮЩАЯ КНОПКА "НАВЕРХ" */
     .back-to-top-btn {
       position: fixed;
       bottom: 2rem;
@@ -645,13 +666,14 @@
       width: 44px;
       height: 44px;
       background: var(--panel);
-      border: 1px solid var(--accent);
+      border: 2px solid var(--accent);
       color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.25rem;
+      font-weight: 900;
       cursor: pointer;
       z-index: 999;
       opacity: 0;
@@ -750,7 +772,7 @@
 
       <!-- СВОРАЧИВАЕМАЯ ЧАСТЬ (Обо мне, Метрики, Радары, Инвентарь, Ачивки) -->
       <div class="hud-collapsible" id="hud-collapsible">
-        <!-- БЛОК "ОБО МНЕ" (Вариант Б) -->
+        <!-- БЛОК "ОБО МНЕ" -->
         <div class="hud-bio-card" id="hud-bio-box">
           <strong>📜 Примечание:</strong>
           <span id="hud-bio-text">....</span>
@@ -829,7 +851,7 @@
   </div>
 
   <!-- ПЛАВАЮЩАЯ КНОПКА "НАВЕРХ" -->
-  <button class="back-to-top-btn" id="back-to-top-btn" onclick="scrollToTop()" title="Наверх">↑</button>
+  <button class="back-to-top-btn" id="back-to-top-btn" onclick="scrollToTop()" title="Наверх">▲</button>
 
   <!-- БИБЛИОТЕКИ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -1153,8 +1175,16 @@
         card.className = 'quest-card';
         card.onclick = () => openModal(item);
 
+        // Обрезка описания на превью карточки (до 200 символов)
+        const fullDesc = (item.short_desc || item.desc || '').trim();
+        let previewDesc = fullDesc;
+        if (fullDesc.length > 200) {
+          previewDesc = fullDesc.slice(0, 190).replace(/\s+\S*$/, '') + 
+            ' <span style="color: var(--accent); font-weight: 600;">... Читать далее →</span>';
+        }
+
         card.innerHTML = `
-          <img class="card-cover" src="${item.cover_url || ''}" alt="${item.title}" onerror="this.style.display='none'">
+          <img class="card-cover" src="${item.cover_url || ''}" alt="${item.title}" loading="lazy" onerror="this.style.display='none'">
           <div class="card-body">
             <div class="card-meta">
               <span>${item.engine || 'Engine'}</span>
@@ -1162,7 +1192,7 @@
             </div>
             <h3 class="card-title">${item.title}</h3>
             <div class="card-role">${item.my_role || ''}</div>
-            <p class="card-desc">${item.desc || item.short_desc || ''}</p>
+            <p class="card-desc">${previewDesc}</p>
             <div class="card-footer">
               <span style="color: var(--text-muted);">${item.status || ''}</span>
               <span style="color: var(--accent);">Посмотреть проект →</span>
@@ -1189,15 +1219,15 @@
       let screenshotsHtml = '';
       if (item.screenshots) {
         const rawScreens = item.screenshots.includes(';') ? item.screenshots.split(';') : item.screenshots.split(',');
-        screenshotsHtml = rawScreens.map(entry => {
+        screenshotsHtml = rawScreens.map((entry, idx) => {
           const parts = entry.split('|').map(p => p.trim());
           const url = parts[0];
-          const caption = parts[1] || 'Нажмите для увеличения';
+          const caption = parts[1] || '';
           if (!url) return '';
           return `
-            <div class="gallery-item" onclick="openLightbox('${url}', '${caption.replace(/'/g, "\\'")}')">
-              <img src="${url}" alt="Скриншот">
-              <div class="gallery-caption">${caption}</div>
+            <div class="gallery-item" data-screen-url="${encodeURI(url)}" data-screen-caption="${encodeURIComponent(caption)}">
+              <img src="${url}" alt="Скриншот" loading="lazy">
+              <div class="gallery-caption">${caption || 'Нажмите для увеличения'}</div>
             </div>
           `;
         }).join('');
@@ -1278,6 +1308,16 @@
           </div>
         </div>
       `;
+
+      // Надежное открытие скриншотов в Lightbox
+      const galleryItems = body.querySelectorAll('.gallery-item');
+      galleryItems.forEach(card => {
+        card.addEventListener('click', () => {
+          const url = decodeURI(card.getAttribute('data-screen-url'));
+          const cap = decodeURIComponent(card.getAttribute('data-screen-caption'));
+          openLightbox(url, cap);
+        });
+      });
 
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
