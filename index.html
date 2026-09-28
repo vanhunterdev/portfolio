@@ -161,11 +161,12 @@
       align-self: flex-start;
     }
     .radar-chart-box {
-      position: relative;
-      width: 100%;
-      max-width: 320px;
-      height: 280px;
-    }
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 330px;
+  margin: 0 auto;
+}
 
     /* ИНВЕНТАРЬ И АЧИВКИ В HUD */
     .hud-lower-grid {
@@ -801,10 +802,26 @@
 
     function createRadarChart(canvasId, items, fillColor, borderColor) {
       const ctx = document.getElementById(canvasId).getContext('2d');
+      
+      // Автоматический перенос длинных названий на 2 строки (если есть " & " или длина больше 14 символов)
+      const formattedLabels = items.map(i => {
+        const text = i.name;
+        if (text.includes(' & ')) {
+          const parts = text.split(' & ');
+          return [parts[0], '& ' + parts[1]];
+        }
+        if (text.length > 14 && text.includes(' ')) {
+          const words = text.split(' ');
+          const mid = Math.ceil(words.length / 2);
+          return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+        }
+        return text;
+      });
+
       new Chart(ctx, {
         type: 'radar',
         data: {
-          labels: items.map(i => i.name),
+          labels: formattedLabels,
           datasets: [{
             data: items.map(i => i.val),
             backgroundColor: fillColor,
@@ -812,16 +829,29 @@
             borderWidth: 2,
             pointBackgroundColor: borderColor,
             pointBorderColor: '#fff',
+            pointRadius: 4,
             pointHoverRadius: 6
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 15,
+              bottom: 15,
+              left: 20,
+              right: 20
+            }
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
+                title: function(context) {
+                  const idx = context[0].dataIndex;
+                  return items[idx].name; // В подсказке показываем полное имя в одну строку
+                },
                 label: function(context) {
                   return ` Уровень: ${context.raw} / 100`;
                 }
@@ -834,7 +864,12 @@
               grid: { color: 'rgba(255, 255, 255, 0.08)' },
               pointLabels: {
                 color: '#94a3b8',
-                font: { family: 'JetBrains Mono', size: 10 }
+                font: { 
+                  family: 'JetBrains Mono', 
+                  size: 11,
+                  weight: 500
+                },
+                padding: 10
               },
               ticks: { display: false, min: 0, max: 100 }
             }
