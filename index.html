@@ -302,14 +302,42 @@
     .ach-name { font-size: 0.8rem; font-weight: 600; color: #fff; line-height: 1.2; }
     .ach-desc { font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
 
-    /* SECTION TABS */
+    /* SECTION TABS С ИНДИКАТОРОМ СКРОЛЛА */
+    .tabs-wrapper {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .tabs-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 8px;
+      width: 48px;
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+      opacity: 0.9;
+    }
     .tabs-nav {
       display: flex;
       gap: 0.75rem;
-      margin-bottom: 2rem;
       border-bottom: 1px solid var(--panel-border);
       padding-bottom: 0.75rem;
       overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--panel);
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs-nav::-webkit-scrollbar {
+      height: 4px;
+    }
+    .tabs-nav::-webkit-scrollbar-track {
+      background: var(--panel);
+      border-radius: 4px;
+    }
+    .tabs-nav::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
     }
     .tab-btn {
       background: transparent;
@@ -322,6 +350,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .tab-btn:hover { color: #fff; background: var(--panel); }
     .tab-btn.active {
@@ -425,22 +454,34 @@
       box-shadow: 0 0 40px var(--accent-glow);
       position: relative;
     }
+
+    /* ПЛАВАЮЩИЙ STICKY КРЕСТИК ВНУТРИ ОКНА */
     .modal-close-btn {
-      position: absolute;
+      position: sticky;
       top: 1rem;
-      right: 1.25rem;
-      background: var(--tag-bg);
+      float: right;
+      margin-top: 0.75rem;
+      margin-right: 0.75rem;
+      background: rgba(28, 35, 51, 0.85);
+      backdrop-filter: blur(8px);
       border: 1px solid var(--panel-border);
       color: #fff;
-      font-size: 1.25rem;
-      width: 36px;
-      height: 36px;
+      font-size: 1.35rem;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
+      z-index: 100;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .modal-close-btn:hover {
+      background: var(--accent);
+      border-color: #fff;
+      transform: scale(1.05);
     }
 
     .modal-hero-cover {
@@ -448,6 +489,7 @@
       height: 240px;
       object-fit: cover;
       border-bottom: 1px solid var(--panel-border);
+      margin-top: -46px; /* Компенсация плавающего крестика */
     }
     .modal-content { padding: 1.75rem; }
 
@@ -595,6 +637,38 @@
       border: 1px solid var(--panel-border);
     }
 
+    /* ПЛАВАЮЩАЯ КНОПКА "НАВЕРХ" (BACK TO TOP) */
+    .back-to-top-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+    .back-to-top-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .back-to-top-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 16px var(--accent-glow);
+      background: var(--tag-bg);
+    }
+
     /* LIGHTBOX */
     .lightbox-backdrop {
       position: fixed;
@@ -626,6 +700,16 @@
       max-width: 800px;
       text-align: center;
     }
+
+    /* АДАПТИВ ПОД СМАРТФОНЫ */
+    @media (max-width: 600px) {
+      body { padding: 1.25rem 0.75rem 4rem; }
+      .hud-header { padding: 1.25rem 1rem; }
+      .hud-contacts-right { align-items: flex-start; width: 100%; }
+      .radar-card { padding: 0.75rem 0.25rem; }
+      .radar-chart-box { height: 280px; }
+      .back-to-top-btn { bottom: 1.25rem; right: 1rem; width: 40px; height: 40px; font-size: 1.1rem; }
+    }
   </style>
 </head>
 <body>
@@ -636,7 +720,6 @@
       <div class="hud-top">
         <div class="hud-profile-left">
           <div class="avatar-wrapper">
-            <!-- Стильный дефолтный силуэт персонажа вместо чужого фото -->
             <img id="hud-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Avatar">
           </div>
           <div class="hud-title">
@@ -662,7 +745,7 @@
 
       <!-- КНОПКА СВОРАЧИВАНИЯ -->
       <button class="toggle-hud-btn" onclick="toggleHud()">
-        <span id="toggle-hud-icon">🔼</span> <span id="toggle-hud-label">Свернуть лист характеристик и радары</span>
+        <span id="toggle-hud-icon">🔼</span> <span id="toggle-hud-label">Свернуть лист</span>
       </button>
 
       <!-- СВОРАЧИВАЕМАЯ ЧАСТЬ (Обо мне, Метрики, Радары, Инвентарь, Ачивки) -->
@@ -713,13 +796,15 @@
       </div>
     </header>
 
-    <!-- ВКЛАДКИ РАЗДЕЛОВ -->
-    <nav class="tabs-nav">
-      <button class="tab-btn active" onclick="switchTab('all')">Все проекты</button>
-      <button class="tab-btn" onclick="switchTab('commercial')">💼 Коммерческие проекты</button>
-      <button class="tab-btn" onclick="switchTab('indie')">🧪 Личные</button>
-      <button class="tab-btn" onclick="switchTab('prototype')">⚡Прототипы</button>
-    </nav>
+    <!-- ВКЛАДКИ РАЗДЕЛОВ С ИНДИКАТОРОМ СКРОЛЛА -->
+    <div class="tabs-wrapper">
+      <nav class="tabs-nav" id="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('all')">Все проекты</button>
+        <button class="tab-btn" onclick="switchTab('commercial')">💼 Коммерческие проекты</button>
+        <button class="tab-btn" onclick="switchTab('indie')">🧪 Личные</button>
+        <button class="tab-btn" onclick="switchTab('prototype')">⚡Прототипы</button>
+      </nav>
+    </div>
 
     <!-- СЕТКА КАРТОЧЕК -->
     <main class="cards-grid" id="cards-container">
@@ -729,8 +814,8 @@
 
   <!-- МОДАЛЬНОЕ ОКНО ДЕТАЛЬНОГО РАЗБОРА КЕЙСА -->
   <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
-    <div class="modal-window" onclick="event.stopPropagation()">
-      <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+    <div class="modal-window" id="modal-window" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeModal()" title="Закрыть">&times;</button>
       <div id="modal-body"></div>
     </div>
   </div>
@@ -740,6 +825,9 @@
     <img id="lightbox-img" class="lightbox-img" src="" alt="Fullscreen Screenshot">
     <div id="lightbox-caption" class="lightbox-caption"></div>
   </div>
+
+  <!-- ПЛАВАЮЩАЯ КНОПКА "НАВЕРХ" -->
+  <button class="back-to-top-btn" id="back-to-top-btn" onclick="scrollToTop()" title="Наверх">↑</button>
 
   <!-- БИБЛИОТЕКИ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -780,6 +868,43 @@
         if (chartTech) chartTech.resize();
       }
     }
+
+    /* ЛОГИКА ПЛАВАЮЩЕЙ КНОПКИ "НАВЕРХ" */
+    function scrollToTop() {
+      const modal = document.getElementById('modal-backdrop');
+      const modalWin = document.getElementById('modal-window');
+      if (modal.classList.contains('open')) {
+        modalWin.scrollTo({ top: 0, behavior: 'smooth' });
+        modal.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function checkScrollTopVisibility() {
+      const btn = document.getElementById('back-to-top-btn');
+      const modal = document.getElementById('modal-backdrop');
+      const modalWin = document.getElementById('modal-window');
+
+      if (modal.classList.contains('open')) {
+        const modalScroll = modalWin.scrollTop || modal.scrollTop;
+        if (modalScroll > 250) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      } else {
+        if (window.scrollY > 250) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      }
+    }
+
+    window.addEventListener('scroll', checkScrollTopVisibility);
+    document.getElementById('modal-window').addEventListener('scroll', checkScrollTopVisibility);
+    document.getElementById('modal-backdrop').addEventListener('scroll', checkScrollTopVisibility);
 
     async function init() {
       // 1. Загрузка проектов
@@ -919,14 +1044,19 @@
 
     function createRadarChart(canvasId, items, fillColor, borderColor) {
       const ctx = document.getElementById(canvasId).getContext('2d');
+      const isMobile = window.innerWidth < 600;
       
       const formattedLabels = items.map(i => {
-        const text = i.name;
+        const text = i.name.trim();
         if (text.includes(' & ')) {
           const parts = text.split(' & ');
           return [parts[0], '& ' + parts[1]];
         }
-        if (text.length > 14 && text.includes(' ')) {
+        if (text.includes(' / ')) {
+          const parts = text.split(' / ');
+          return [parts[0], '/ ' + parts[1]];
+        }
+        if (text.length > 12 && text.includes(' ')) {
           const words = text.split(' ');
           const mid = Math.ceil(words.length / 2);
           return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
@@ -945,14 +1075,21 @@
             borderWidth: 2,
             pointBackgroundColor: borderColor,
             pointBorderColor: '#fff',
-            pointRadius: 4,
+            pointRadius: isMobile ? 3 : 4,
             pointHoverRadius: 6
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: 15 },
+          layout: { 
+            padding: {
+              top: 10,
+              bottom: 10,
+              left: isMobile ? 26 : 20,
+              right: isMobile ? 26 : 20
+            }
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
@@ -975,8 +1112,12 @@
               grid: { color: 'rgba(255, 255, 255, 0.08)' },
               pointLabels: {
                 color: '#94a3b8',
-                font: { family: 'JetBrains Mono', size: 11, weight: 500 },
-                padding: 10
+                font: { 
+                  family: 'JetBrains Mono', 
+                  size: isMobile ? 9.5 : 11, 
+                  weight: 500 
+                },
+                padding: isMobile ? 6 : 10
               },
               ticks: { display: false, stepSize: 20 }
             }
@@ -1032,7 +1173,12 @@
 
     function openModal(item) {
       const modal = document.getElementById('modal-backdrop');
+      const modalWin = document.getElementById('modal-window');
       const body = document.getElementById('modal-body');
+
+      // Сбрасываем скролл модалки наверх
+      modalWin.scrollTop = 0;
+      modal.scrollTop = 0;
 
       const tasksList = item.my_tasks 
         ? item.my_tasks.split(';').map(t => t.trim()).filter(Boolean).map(t => `<li>${t}</li>`).join('')
@@ -1067,18 +1213,21 @@
           <h2 style="font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem;">${item.title}</h2>
           <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem;">${item.desc || ''}</div>
 
+          <!-- КНОПКА СЫГРАТЬ В БИЛД СРАЗУ ПОСЛЕ ОПИСАНИЯ -->
           ${item.build_url ? `
             <a href="${item.build_url}" target="_blank" class="btn-build-primary">
               🎮 Сыграть в билд
             </a>
           ` : ''}
 
+          <!-- 1. ВИДЕО YOUTUBE -->
           ${cleanYtId ? `
             <div class="video-container">
               <iframe src="https://www.youtube.com/embed/${cleanYtId}?rel=0" allowfullscreen></iframe>
             </div>
           ` : ''}
 
+          <!-- 2. РАЗДЕЛЕННЫЕ ПЛАШКИ ХАРАКТЕРИСТИК -->
           <div class="info-panels-group">
             <div class="stat-panel-card">
               <h4>📦 О проекте</h4>
@@ -1102,23 +1251,26 @@
             </div>
           </div>
 
+          <!-- 3. ВЫПОЛНЕННЫЕ ЗАДАЧИ -->
           ${tasksList ? `
             <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">📜 Задачи на проекте:</h4>
             <ul class="quest-tasks">${tasksList}</ul>
           ` : ''}
 
+          <!-- 4. ТЕХНИЧЕСКИЙ РАЗБОР / АРХИТЕКТУРА -->
           ${item.tech_desc ? `
             <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Дополнительное описание:</h4>
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">${item.tech_desc}</p>
           ` : ''}
 
+          <!-- 5. СКРИНШОТЫ С ПОДПИСЯМИ -->
           ${screenshotsHtml ? `
             <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты:</h4>
             <div class="gallery-grid">${screenshotsHtml}</div>
           ` : ''}
 
+          <!-- 6. КНОПКИ ДЕЙСТВИЙ ВНИЗУ (БЕЗ ДУБЛИКАТА БИЛДА) -->
           <div class="modal-actions">
-            ${item.build_url ? `<a href="${item.build_url}" target="_blank" class="action-btn" style="background: var(--green); color: #042f2e;">🎮 Сыграть в билд</a>` : ''}
             ${item.doc_url ? `<a href="${item.doc_url}" target="_blank" class="action-btn secondary">📜 Дизайн-документ (GDD)</a>` : ''}
             ${item.repo_url ? `<a href="${item.repo_url}" target="_blank" class="action-btn secondary">💻 Исходный код</a>` : ''}
           </div>
@@ -1127,12 +1279,14 @@
 
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      checkScrollTopVisibility();
     }
 
     function closeModal(event) {
       if (!event || event.target.id === 'modal-backdrop' || event.target.classList.contains('modal-close-btn')) {
         document.getElementById('modal-backdrop').classList.remove('open');
         document.body.style.overflow = '';
+        checkScrollTopVisibility();
       }
     }
 
