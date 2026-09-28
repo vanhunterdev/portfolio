@@ -772,10 +772,10 @@
       const isCollapsed = coll.classList.toggle('collapsed');
       if (isCollapsed) {
         icon.textContent = '🔽';
-        label.textContent = 'Развернуть лист характеристик и радары';
+        label.textContent = 'Развернуть лист';
       } else {
         icon.textContent = '🔼';
-        label.textContent = 'Свернуть лист характеристик и радары';
+        label.textContent = 'Свернуть лист';
         if (chartGd) chartGd.resize();
         if (chartTech) chartTech.resize();
       }
@@ -1022,7 +1022,7 @@
             <p class="card-desc">${item.desc || item.short_desc || ''}</p>
             <div class="card-footer">
               <span style="color: var(--text-muted);">${item.status || ''}</span>
-              <span style="color: var(--accent);">Осмотреть проект →</span>
+              <span style="color: var(--accent);">Посмотреть проект →</span>
             </div>
           </div>
         `;
