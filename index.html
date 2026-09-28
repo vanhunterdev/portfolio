@@ -504,16 +504,24 @@
           <!-- 1. ВИДЕО СРАЗУ ПОСЛЕ ОБЛОЖКИ И ВВОДНОЙ ЧАСТИ -->
           ${item.youtube_id ? `
             <div class="video-container">
+            // Функция автоматического извлечения чистого ID из любой ссылки YouTube
+function getYouTubeId(urlOrId) {
+  if (!urlOrId) return '';
+  const match = urlOrId.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  return match ? match[1] : urlOrId.trim();
+}
+
+const cleanYtId = getYouTubeId(item.youtube_id);
               <iframe src="https://www.youtube.com/embed/${item.youtube_id}?rel=0" allowfullscreen></iframe>
             </div>
           ` : ''}
 
           <!-- 2. СТАТЫ ПРЕДМЕТА / ПРОЕКТА -->
           <div class="stat-sheet">
-            <div class="stat-sheet-item"><strong>Роль:</strong> ${item.my_role || 'Game Designer'}</div>
+            <div class="stat-sheet-item"><strong>Моя роль:</strong> ${item.my_role || 'Game Designer'}</div>
             <div class="stat-sheet-item"><strong>Команда:</strong> ${item.team_composition || item.team_type || 'Solo'}</div>
             <div class="stat-sheet-item"><strong>Платформа:</strong> ${item.platform || 'PC'}</div>
-            <div class="stat-sheet-item"><strong>Инструменты:</strong> ${item.tools || '-'}</div>
+            <div class="stat-sheet-item"><strong>Мои инструменты:</strong> ${item.tools || '-'}</div>
           </div>
 
           <!-- 3. МОИ ЗАДАЧИ -->
@@ -524,13 +532,13 @@
 
           <!-- 4. ТЕХНИЧЕСКИЙ РАЗБОР -->
           ${item.tech_desc ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Архитектура и реализация:</h4>
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.5rem; color: #fff;">⚙️ Дополнительное описание:</h4>
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.6;">${item.tech_desc}</p>
           ` : ''}
 
           <!-- 5. СКРИНШОТЫ -->
           ${screenshots ? `
-            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты и схемы:</h4>
+            <h4 style="font-family: 'JetBrains Mono'; margin-top: 1.75rem; color: #fff;">🖼️ Скриншоты:</h4>
             <div class="gallery-grid">${screenshots}</div>
           ` : ''}
 
