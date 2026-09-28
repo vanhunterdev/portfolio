@@ -803,7 +803,7 @@
     function createRadarChart(canvasId, items, fillColor, borderColor) {
       const ctx = document.getElementById(canvasId).getContext('2d');
       
-      // Автоматический перенос длинных названий на 2 строки (если есть " & " или длина больше 14 символов)
+      // Авто-перенос длинных фраз на 2 строки
       const formattedLabels = items.map(i => {
         const text = i.name;
         if (text.includes(' & ')) {
@@ -823,7 +823,7 @@
         data: {
           labels: formattedLabels,
           datasets: [{
-            data: items.map(i => i.val),
+            data: items.map(i => Number(i.val) || 0),
             backgroundColor: fillColor,
             borderColor: borderColor,
             borderWidth: 2,
@@ -837,12 +837,7 @@
           responsive: true,
           maintainAspectRatio: false,
           layout: {
-            padding: {
-              top: 15,
-              bottom: 15,
-              left: 20,
-              right: 20
-            }
+            padding: 15
           },
           plugins: {
             legend: { display: false },
@@ -850,7 +845,7 @@
               callbacks: {
                 title: function(context) {
                   const idx = context[0].dataIndex;
-                  return items[idx].name; // В подсказке показываем полное имя в одну строку
+                  return items[idx].name;
                 },
                 label: function(context) {
                   return ` Уровень: ${context.raw} / 100`;
@@ -860,8 +855,15 @@
           },
           scales: {
             r: {
-              angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-              grid: { color: 'rgba(255, 255, 255, 0.08)' },
+              min: 0,             // КРИТИЧНО: фиксируем строгий ноль шкалы
+              max: 100,           // КРИТИЧНО: максимум 100%
+              beginAtZero: true,  // Запрещаем Chart.js сплющивать центр
+              angleLines: { 
+                color: 'rgba(255, 255, 255, 0.12)' 
+              },
+              grid: { 
+                color: 'rgba(255, 255, 255, 0.08)' 
+              },
               pointLabels: {
                 color: '#94a3b8',
                 font: { 
@@ -871,7 +873,10 @@
                 },
                 padding: 10
               },
-              ticks: { display: false, min: 0, max: 100 }
+              ticks: { 
+                display: false,   // Скрываем цифры делений, чтобы не шуметь
+                stepSize: 20      // Шаг колец паутины (20, 40, 60, 80, 100)
+              }
             }
           }
         }
