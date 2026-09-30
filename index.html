@@ -6,7 +6,7 @@
   <title>Game Designer Portfolio | Character Sheet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --bg: #0a0c10;
@@ -302,6 +302,106 @@
     .ach-name { font-size: 0.8rem; font-weight: 600; color: #fff; line-height: 1.2; }
     .ach-desc { font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
 
+    /* ЛАКОНИЧНЫЙ БЛОК STEAM ИГР */
+    .steam-section {
+      border-top: 1px solid var(--panel-border);
+      padding-top: 1.25rem;
+      margin-top: 1.25rem;
+    }
+    .steam-toggle-btn {
+      width: 100%;
+      background: var(--tag-bg);
+      border: 1px solid var(--panel-border);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .steam-toggle-btn:hover {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.12);
+    }
+    .steam-games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .steam-games-grid.collapsed {
+      display: none;
+    }
+    .steam-game-item {
+      background: var(--tag-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .steam-game-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .steam-game-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 6px;
+      border: 1px solid var(--panel-border);
+      flex-shrink: 0;
+    }
+    .steam-game-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .steam-game-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+    .steam-game-stats {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .steam-game-stats strong {
+      color: var(--accent);
+    }
+    .steam-progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .steam-progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--accent), var(--green));
+      border-radius: 2px;
+    }
+
     /* SECTION TABS С ИНДИКАТОРОМ СКРОЛЛА */
     .tabs-wrapper {
       position: relative;
@@ -484,10 +584,10 @@
       height: 40px;
       border-radius: 50%;
       cursor: pointer;
-      display: grid;             /* Идеальное центрирование */
-      place-items: center;      /* по горизонтали и вертикали */
-      padding: 0;               /* Сбрасываем лишние отступы кнопки */
-      line-height: 0;           /* Убираем смещение базовой линии шрифта */
+      display: grid;
+      place-items: center;
+      padding: 0;
+      line-height: 0;
       z-index: 100;
       transition: all 0.2s ease;
       box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
@@ -505,11 +605,11 @@
       width: 100%;
       aspect-ratio: 1.26 / 1;
       height: auto;
-      max-height: none;         /* Убираем ограничение по высоте */
-      object-fit: contain;      /* Гарантирует, что картинка помещается целиком 1:1 */
+      max-height: none;
+      object-fit: contain;
       background: #080a0f;
       border-bottom: 1px solid var(--panel-border);
-      margin-top: -46px;        /* Подложка под плавающий крестик */
+      margin-top: -46px;
       display: block;
     }
     .modal-content { padding: 1.75rem; }
@@ -731,6 +831,7 @@
       .radar-card { padding: 0.75rem 0.25rem; }
       .radar-chart-box { height: 280px; }
       .back-to-top-btn { bottom: 1.25rem; right: 1rem; width: 40px; height: 40px; font-size: 1.1rem; }
+      .steam-games-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -770,7 +871,7 @@
         <span id="toggle-hud-icon">🔼</span> <span id="toggle-hud-label">Свернуть лист</span>
       </button>
 
-      <!-- СВОРАЧИВАЕМАЯ ЧАСТЬ (Обо мне, Метрики, Радары, Инвентарь, Ачивки) -->
+      <!-- СВОРАЧИВАЕМАЯ ЧАСТЬ (Обо мне, Метрики, Радары, Инвентарь, Ачивки, Steam) -->
       <div class="hud-collapsible" id="hud-collapsible">
         <!-- БЛОК "ОБО МНЕ" -->
         <div class="hud-bio-card" id="hud-bio-box">
@@ -813,6 +914,17 @@
             <div class="achievements-grid" id="achievements-grid">
               <!-- Ачивки из profile -->
             </div>
+          </div>
+        </div>
+
+        <!-- РАСКРЫВАЮЩИЙСЯ ЛАКОНИЧНЫЙ БЛОК STEAM ИГР -->
+        <div class="steam-section" id="steam-section">
+          <button type="button" class="steam-toggle-btn" onclick="toggleSteamGames()">
+            <span>🎮 Избранные игры (Steam / Насмотренность)</span>
+            <span id="steam-toggle-icon">▼</span>
+          </button>
+          <div class="steam-games-grid collapsed" id="steam-games-grid">
+            <!-- Сюда подгружаются игры из profile -->
           </div>
         </div>
       </div>
@@ -880,7 +992,7 @@
       const coll = document.getElementById('hud-collapsible');
       const icon = document.getElementById('toggle-hud-icon');
       const label = document.getElementById('toggle-hud-label');
-      
+
       const isCollapsed = coll.classList.toggle('collapsed');
       if (isCollapsed) {
         icon.textContent = '🔽';
@@ -891,6 +1003,14 @@
         if (chartGd) chartGd.resize();
         if (chartTech) chartTech.resize();
       }
+    }
+
+    /* РАСКРЫТИЕ / СВОРАЧИВАНИЕ STEAM ИГР */
+    function toggleSteamGames() {
+      const grid = document.getElementById('steam-games-grid');
+      const icon = document.getElementById('steam-toggle-icon');
+      const isCollapsed = grid.classList.toggle('collapsed');
+      icon.textContent = isCollapsed ? '▼' : '▲';
     }
 
     /* ЛОГИКА ПЛАВАЮЩЕЙ КНОПКИ "НАВЕРХ" */
@@ -961,12 +1081,40 @@
       }
     }
 
+    function renderSteamList(games) {
+      if (!games || games.length === 0) {
+        document.getElementById('steam-section').style.display = 'none';
+        return;
+      }
+      document.getElementById('steam-section').style.display = 'block';
+      document.getElementById('steam-games-grid').innerHTML = games.map(g => {
+        const achPercent = parseInt(g.extra) || 0;
+        const iconSymbol = g.desc ? g.desc.trim() : '🎮';
+        return `
+          <div class="steam-game-item">
+            <div class="steam-game-icon">${iconSymbol}</div>
+            <div class="steam-game-info">
+              <div class="steam-game-title" title="${g.name}">${g.name}</div>
+              <div class="steam-game-stats">
+                <span>⏱️ ${g.value || '0 ч'}</span>
+                <span>🏆 <strong>${g.extra || '0%'}</strong></span>
+              </div>
+              <div class="steam-progress-track">
+                <div class="steam-progress-fill" style="width: ${Math.min(100, Math.max(0, achPercent))}%;"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function applyProfileData(rows) {
       const stats = [];
       const skillsGd = [];
       const skillsTech = [];
       const gear = [];
       const achs = [];
+      const favGames = [];
 
       rows.forEach(r => {
         const type = (r.type || '').trim().toLowerCase();
@@ -987,6 +1135,8 @@
           gear.push(r);
         } else if (type === 'achievement') {
           achs.push(r);
+        } else if (type === 'fav_game') {
+          favGames.push(r);
         }
       });
 
@@ -1020,9 +1170,21 @@
         `).join('');
       }
 
+      // Отрисовка Steam игр
+      renderSteamList(favGames.length > 0 ? favGames : getDefaultSteamGames());
+
       // Инициализация радаров
       chartGd = createRadarChart('gdRadarChart', skillsGd, 'rgba(99, 102, 241, 0.4)', '#818cf8');
       chartTech = createRadarChart('techRadarChart', skillsTech, 'rgba(16, 185, 129, 0.4)', '#34d399');
+    }
+
+    function getDefaultSteamGames() {
+      return [
+        { name: "Baldur's Gate 3", value: '340 ч', extra: '88%', desc: '⚔️' },
+        { name: 'WH40k: Rogue Trader', value: '185 ч', extra: '74%', desc: '🚀' },
+        { name: 'Beacon Patrol', value: '42 ч', extra: '100%', desc: '🧭' },
+        { name: 'Slay the Spire', value: '260 ч', extra: '95%', desc: '🃏' }
+      ];
     }
 
     function renderDefaultProfile() {
@@ -1040,7 +1202,7 @@
         { name: 'Архитектура & Пайплайны', val: 85 },
         { name: 'Продакшен & Менторство', val: 85 }
       ];
-      
+
       document.getElementById('char-metrics-bar').innerHTML = `
         <div class="metric-card"><div class="metric-val">36<span class="metric-unit">lvl</span></div><div class="metric-label">Возраст</div></div>
         <div class="metric-card"><div class="metric-val">4+<span class="metric-unit">лет</span></div><div class="metric-label">Коммерческий опыт</div></div>
@@ -1051,7 +1213,7 @@
       document.getElementById('gear-list').innerHTML = `
         <div class="gear-item">🎮 <strong>Движки:</strong> <span style="color: var(--text-muted);">Unity, Unreal, Godot, Cocos, Turbowarp, Construct</span></div>
         <div class="gear-item">💻 <strong>Код & Вайбкод:</strong> <span style="color: var(--text-muted);">Визуальное программирование, C#, GDScript, Git</span></div>
-        <div class="gear-item">📜 <strong>Документация:</strong> <span style="color: var(--text-muted);">Google Docs, Miro, Confluence, Notion</span></div>
+        <div class="gear-item">📜 <strong>Документация & Менеджмент:</strong> <span style="color: var(--text-muted);">Google Docs, Miro, Confluence, Notion, Jira</span></div>
         <div class="gear-item">🎨 <strong>Арт & Аудио:</strong> <span style="color: var(--text-muted);">Figma, Photoshop, Spine 2D, Blender</span></div>
       `;
 
@@ -1062,6 +1224,8 @@
         <div class="achievement-card"><span class="ach-icon">⚡</span><div><div class="ach-name">Судья</div><div class="ach-desc">Участник жюри хакатонов</div></div></div>
       `;
 
+      renderSteamList(getDefaultSteamGames());
+
       chartGd = createRadarChart('gdRadarChart', defaultGd, 'rgba(99, 102, 241, 0.4)', '#818cf8');
       chartTech = createRadarChart('techRadarChart', defaultTech, 'rgba(16, 185, 129, 0.4)', '#34d399');
     }
@@ -1069,7 +1233,7 @@
     function createRadarChart(canvasId, items, fillColor, borderColor) {
       const ctx = document.getElementById(canvasId).getContext('2d');
       const isMobile = window.innerWidth < 600;
-      
+
       const formattedLabels = items.map(i => {
         const text = i.name.trim();
         if (text.includes(' & ')) {
@@ -1237,7 +1401,7 @@
 
       body.innerHTML = `
         ${item.cover_url ? `<img class="modal-hero-cover" src="${item.cover_url}" alt="Cover">` : ''}
-        
+
         <div class="modal-content">
           <div style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.85rem; margin-bottom: 0.3rem;">
             [${(item.section || 'QUEST').toUpperCase()}] // ${item.engine || ''} ${item.year ? `// ${item.year}` : ''}
