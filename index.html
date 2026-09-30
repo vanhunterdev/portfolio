@@ -330,7 +330,7 @@
     }
     .steam-games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
       gap: 0.75rem;
       margin-top: 1rem;
     }
@@ -341,32 +341,45 @@
       background: var(--tag-bg);
       border: 1px solid var(--panel-border);
       border-radius: 8px;
-      padding: 0.65rem 0.85rem;
+      padding: 0.6rem 0.85rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      min-height: 48px;
       transition: border-color 0.2s ease, transform 0.2s ease;
     }
     .steam-game-item:hover {
       border-color: var(--accent);
       transform: translateY(-2px);
     }
-    .steam-game-icon {
-      font-size: 1.4rem;
-      line-height: 1;
-      width: 32px;
-      height: 32px;
+    .steam-game-icon-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      background: #080a0f;
+      border: 1px solid var(--panel-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 6px;
-      border: 1px solid var(--panel-border);
+      overflow: hidden;
       flex-shrink: 0;
+    }
+    .steam-game-icon-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .steam-game-icon-box .fallback-emoji {
+      font-size: 1.2rem;
+      line-height: 1;
     }
     .steam-game-info {
       flex-grow: 1;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .steam-game-title {
       font-size: 0.82rem;
@@ -375,31 +388,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.2;
-      margin-bottom: 0.3rem;
+      line-height: 1.25;
     }
-    .steam-game-stats {
-      display: flex;
-      justify-content: space-between;
+    .steam-game-hours {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
-    }
-    .steam-game-stats strong {
       color: var(--accent);
-    }
-    .steam-progress-track {
-      width: 100%;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .steam-progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--accent), var(--green));
-      border-radius: 2px;
+      margin-top: 0.2rem;
+      line-height: 1;
     }
 
     /* SECTION TABS С ИНДИКАТОРОМ СКРОЛЛА */
@@ -1088,20 +1084,24 @@
       }
       document.getElementById('steam-section').style.display = 'block';
       document.getElementById('steam-games-grid').innerHTML = games.map(g => {
-        const achPercent = parseInt(g.extra) || 0;
-        const iconSymbol = g.desc ? g.desc.trim() : '🎮';
+        // Иконку берем из extra (ссылка/файл картинки или эмодзи)
+        const iconVal = (g.extra || '').trim();
+        const isImagePath = iconVal.includes('/') || iconVal.includes('.') || iconVal.startsWith('http');
+        
+        const iconHtml = isImagePath
+          ? `<img src="${iconVal}" alt="${g.name}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'fallback-emoji\\'>🎮</span>'">`
+          : `<span class="fallback-emoji">${iconVal || '🎮'}</span>`;
+
+        const hoursVal = (g.value || '').trim();
+
         return `
           <div class="steam-game-item">
-            <div class="steam-game-icon">${iconSymbol}</div>
+            <div class="steam-game-icon-box">
+              ${iconHtml}
+            </div>
             <div class="steam-game-info">
               <div class="steam-game-title" title="${g.name}">${g.name}</div>
-              <div class="steam-game-stats">
-                <span>⏱️ ${g.value || '0 ч'}</span>
-                <span>🏆 <strong>${g.extra || '0%'}</strong></span>
-              </div>
-              <div class="steam-progress-track">
-                <div class="steam-progress-fill" style="width: ${Math.min(100, Math.max(0, achPercent))}%;"></div>
-              </div>
+              ${hoursVal ? `<div class="steam-game-hours">⏱️ ${hoursVal}</div>` : ''}
             </div>
           </div>
         `;
@@ -1180,10 +1180,10 @@
 
     function getDefaultSteamGames() {
       return [
-        { name: "Baldur's Gate 3", value: '340 ч', extra: '88%', desc: '⚔️' },
-        { name: 'WH40k: Rogue Trader', value: '185 ч', extra: '74%', desc: '🚀' },
-        { name: 'Beacon Patrol', value: '42 ч', extra: '100%', desc: '🧭' },
-        { name: 'Slay the Spire', value: '260 ч', extra: '95%', desc: '🃏' }
+        { name: "Baldur's Gate 3", value: '340 ч', extra: '⚔️' },
+        { name: 'WH40k: Rogue Trader', value: '185 ч', extra: '🚀' },
+        { name: 'Beacon Patrol', value: '42 ч', extra: '🧭' },
+        { name: 'Slay the Spire', value: '260 ч', extra: '🃏' }
       ];
     }
 
